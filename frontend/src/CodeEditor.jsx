@@ -1,29 +1,48 @@
-import './App.css';
 import { useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
 import Editor from '@monaco-editor/react';
 import { FiMenu } from 'react-icons/fi';
+import './App.css';
 
-const socket = io('http://localhost:5000'); // Replace with your server URL
+const socket = io('http://localhost:5000');
 
 function CodeEditor() {
   const [code, setCode] = useState('');
   const [language, setLanguage] = useState('javascript');
   const [theme, setTheme] = useState('vs-dark');
   const [menuOpen, setMenuOpen] = useState(false);
-  const roomId = 'default-room'; // Hardcoded room ID for now
+  const [roomId, setRoomId] = useState(null); // Start with null to avoid premature connection
 
   useEffect(() => {
-    socket.emit('joinRoom', { roomId });
-
+    const pathSegments = window.location.pathname.split('/');
+    const roomIdFromUrl = pathSegments[1] || 'default-room'; // Get the first segment after the '/'
+    
+    setRoomId(roomIdFromUrl);
+  
+    socket.emit('joinRoom', { roomId: roomIdFromUrl });
+  
     socket.on('codeChange', (updatedCode) => {
       setCode(updatedCode);
     });
-
+  
     return () => {
       socket.off('codeChange');
     };
-  }, [roomId]);
+  }, []);
+
+  useEffect(() => {
+    if (roomId) {
+      socket.emit('joinRoom', { roomId });
+
+      socket.on('codeChange', (updatedCode) => {
+        setCode(updatedCode);
+      });
+
+      return () => {
+        socket.off('codeChange');
+      };
+    }
+  }, [roomId]); // Run this effect only when roomId changes
 
   const handleEditorChange = (value) => {
     setCode(value);

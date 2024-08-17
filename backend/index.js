@@ -5,35 +5,58 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const Room = require('./models/Room');
 const roomRoutes = require('./routes/room');
+require('dotenv').config();
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "http://localhost:5173", // Replace with your frontend URL
     methods: ["GET", "POST"],
   },
 });
 
-app.use(cors());
+// CORS configuration
+app.use(cors({
+  origin: 'http://localhost:5173', // Replace with your frontend URL
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type'],
+}));
 
-mongoose.connect('mongodb://localhost:27017/codeShareDB', {
+// Middleware to parse JSON bodies
+app.use(express.json());
+
+// MongoDB connection
+mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-});
+})
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
-app.use(express.json());
+// Routes
 app.use('/api/room', roomRoutes);
 
+// Socket.IO connection
 io.on('connection', (socket) => {
+  console.log('New client connected');
+
   socket.on('joinRoom', async ({ roomId }) => {
     socket.join(roomId);
     console.log(`User joined room: ${roomId}`);
 
     // Fetch the code from the database
-    const room = await Room.findOne({ roomId });
-    if (room) {
-      socket.emit('codeChange', room.code); // Send the existing code to the client
+    try {
+      const room = await Room.findOne({ roomId });
+      if (room) {
+        socket.emit('codeChange', room.code || ''); // Send the existing code to the client
+      } else {
+        // Create a new room if it doesn't exist
+        await new Room({ roomId }).save();
+        socket.emit('codeChange', ''); // Emit empty code for new rooms
+      }
+    } catch (err) {
+      console.error('Error loading or creating room:', err);
     }
   });
 
@@ -41,7 +64,7 @@ io.on('connection', (socket) => {
     try {
       // Find the room by roomId
       let room = await Room.findOne({ roomId });
-      
+
       if (!room) {
         // If the room doesn't exist, create a new one
         room = new Room({ roomId, code });
@@ -62,7 +85,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
-    console.log('User disconnected');
+    console.log('Client disconnected');
   });
 });
 

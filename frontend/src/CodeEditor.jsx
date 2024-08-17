@@ -4,7 +4,7 @@ import Editor from '@monaco-editor/react';
 import { FiMenu } from 'react-icons/fi';
 import './App.css';
 
-const socket = io('http://localhost:5000');
+const socket = io('https://cocode-9zbp.onrender.com:5000');
 
 function CodeEditor() {
   const [code, setCode] = useState('');

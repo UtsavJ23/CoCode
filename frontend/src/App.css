@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  }
+  
+  html, body, #root {
+    height: 100%;
+  }
+  
+  h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+  }
+  
+  .bg-gradient-to-r {
+    background-size: 100% 100%;
+    background-position: 0px 0px;
+    background-image: radial-gradient(18% 28% at 24% 50%, #1a1a2e 7%, #111111 100%), radial-gradient(18% 28% at 18% 71%, #0f0f20 6%, #080808 100%), radial-gradient(70% 53% at 36% 76%, #121212 0%, #080808 100%), radial-gradient(42% 53% at 15% 94%, #10101a 7%, #080808 100%), radial-gradient(42% 53% at 34% 72%, #121212 7%, #080808 100%), radial-gradient(18% 28% at 35% 87%, #10101a 7%, #080808 100%), radial-gradient(31% 43% at 7% 98%, #10101a 24%, #080808 100%), radial-gradient(21% 37% at 72% 23%, #191933 24%, #080808 100%), radial-gradient(35% 56% at 91% 74%, #191933 9%, #080808 100%), radial-gradient(74% 86% at 67% 38%, #0f0f20 24%, #080808 100%), linear-gradient(125deg, #1a1a2e 1%, #0f0f20 100%);
+  }
+  
+  h1 {
+    font-family: "Poppins", sans-serif;
+  }
+  
+  .header {
+    background-color: #1a1a2e;
+  }
+  

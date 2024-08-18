@@ -11,11 +11,11 @@ function CodeEditor() {
   const [language, setLanguage] = useState('javascript');
   const [theme, setTheme] = useState('vs-dark');
   const [menuOpen, setMenuOpen] = useState(false);
-  const [roomId, setRoomId] = useState(null); // Start with null to avoid premature connection
+  const [roomId, setRoomId] = useState(null);
 
   useEffect(() => {
     const pathSegments = window.location.pathname.split('/');
-    const roomIdFromUrl = pathSegments[1] || 'default-room'; // Get the first segment after the '/'
+    const roomIdFromUrl = pathSegments[1] || 'default-room';
     
     setRoomId(roomIdFromUrl);
   
@@ -42,7 +42,7 @@ function CodeEditor() {
         socket.off('codeChange');
       };
     }
-  }, [roomId]); // Run this effect only when roomId changes
+  }, [roomId]);
 
   const handleEditorChange = (value) => {
     setCode(value);
@@ -50,18 +50,18 @@ function CodeEditor() {
   };
 
   return (
-    <div className="h-screen relative flex flex-col overflow-hidden">
-      <header className="bg-gradient-to-r from-black via-gray-900 to-black shadow-md p-4 text-white flex justify-between items-center h-14 border-b border-gray-800 z-20">
+    <div className="h-screen relative flex flex-col overflow-hidden bg-gradient-to-r">
+      <header className="shadow-md p-4 text-white flex justify-between items-center h-14 border-b border-gray-800 z-20">
         <button
-          className="block lg:hidden text-white text-3xl ml-4"
+          className="block lg:hidden glow-button text-white text-3xl ml-4"
           onClick={() => setMenuOpen(!menuOpen)}
         >
           <FiMenu />
         </button>
-        <h1 className="text-xl font-bold mx-auto">CoCode</h1>
+        <h1 className="text-xl font-bold ml-4">CoCode</h1> {/* Left-aligned */}
         <div className="hidden lg:flex space-x-4 mr-4">
           <select
-            className="bg-gray-800 text-white border border-gray-600 rounded-lg p-1 text-sm"
+            className="glow-select"
             value={language}
             onChange={(e) => setLanguage(e.target.value)}
           >
@@ -73,7 +73,7 @@ function CodeEditor() {
             <option value="css">CSS</option>
           </select>
           <select
-            className="bg-gray-800 text-white border border-gray-600 rounded-lg p-1 text-sm"
+            className="glow-select"
             value={theme}
             onChange={(e) => setTheme(e.target.value)}
           >
@@ -92,7 +92,7 @@ function CodeEditor() {
         <ul className="space-y-6 text-lg">
           <li>
             <button
-              className="bg-gray-800 text-white border border-gray-600 rounded-lg px-4 py-2"
+              className="glow-button"
               onClick={() => setMenuOpen(false)}
             >
               Close Menu
@@ -100,7 +100,7 @@ function CodeEditor() {
           </li>
           <li>
             <select
-              className="bg-gray-800 text-white border border-gray-600 rounded-lg p-2 w-full"
+              className="glow-select"
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
             >
@@ -114,7 +114,7 @@ function CodeEditor() {
           </li>
           <li>
             <select
-              className="bg-gray-800 text-white border border-gray-600 rounded-lg p-2 w-full"
+              className="glow-select"
               value={theme}
               onChange={(e) => setTheme(e.target.value)}
             >
@@ -126,7 +126,7 @@ function CodeEditor() {
         </ul>
       </nav>
 
-      <div className="flex-grow relative z-10 bg-gray-900 p-1.5 border-8 border-t-0 border-transparent bg-gradient-to-r from-black via-gray-900 to-black">
+      <div className="flex-grow relative z-10 p-1.5 border-8 border-t-0 border-transparent bg-gradient-to-r">
         <Editor
           height="100%"
           language={language}

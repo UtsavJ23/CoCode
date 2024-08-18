@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './home.css'; // Import the custom CSS for the dreamy effect
+import './Home.css'; // Import the custom CSS for the dreamy effect
 
 const Home = () => {
   const navigate = useNavigate();

@@ -11,14 +11,14 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: ["http://localhost:5173", "https://cocoded.netlify.app"],// Replace with your frontend URL
+    origin: ["http://localhost:5173", "https://cocoded.netlify.app", "https://cocode.live"],// Replace with your frontend URL
     methods: ["GET", "POST"],
   },
 });
 
 // CORS configuration
 app.use(cors({
-  origin: ["http://localhost:5173", "https://cocoded.netlify.app"], // Replace with your frontend URL
+  origin: ["http://localhost:5173", "https://cocoded.netlify.app", "https://cocode.live"], // Replace with your frontend URL
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type'],
 }));
